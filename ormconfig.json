@@ -1,0 +1,20 @@
+{
+  "type": "mariadb",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "mysql",
+  "database": "boilerplate",
+  "migrationsTableName": "migrations",
+  "entities": [
+    "/home/sergio/Developer/tfgs/nx-boilerplate/libs/**/*.entity{.ts,.js}"
+  ],
+  "migrations": [
+    "/home/sergio/Developer/tfgs/nx-boilerplate/apps/api/src/migrations/*{.ts,.js}"
+  ],
+  "cli": {
+    "migrationsDir": "apps/api/src/migrations"
+  },
+  "keepConnectionAlive": true,
+  "autoLoadEntities": true
+}

@@ -1,0 +1,216 @@
+{
+  "version": 2,
+  "projects": {
+    "web": {
+      "root": "apps/web",
+      "sourceRoot": "apps/web",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/web",
+            "outputPath": "dist/apps/web"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "web:build",
+            "dev": true,
+            "proxyConfig": "apps/web/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "web:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "web:build:production"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/web"],
+          "options": {
+            "jestConfig": "apps/web/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "web-e2e": {
+      "root": "apps/web-e2e",
+      "sourceRoot": "apps/web-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/web-e2e/cypress.json",
+            "tsConfig": "apps/web-e2e/tsconfig.e2e.json",
+            "devServerTarget": "web:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "web:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps/api/src",
+      "projectType": "application",
+      "prefix": "api",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/api",
+            "main": "apps/api/src/main.ts",
+            "tsConfig": "apps/api/tsconfig.app.json",
+            "assets": ["apps/api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/api/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/api"],
+          "options": {
+            "jestConfig": "apps/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "migration": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "commands": [
+              "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+              "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm {args.run}"
+            ],
+            "parallel": false
+          }
+        },
+        "migration-create": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "commands": [
+              "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+              "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm migration:create -n {args.name}"
+            ],
+            "parallel": false
+          }
+        },
+        "migration-generate": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "commands": [
+              "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+              "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm migration:generate -n {args.name}"
+            ],
+            "parallel": false
+          }
+        },
+        "migration-run": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "commands": [
+              "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+              "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm migration:run"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "domain": {
+      "root": "libs/domain",
+      "sourceRoot": "libs/domain/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/domain/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/domain"],
+          "options": {
+            "jestConfig": "libs/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/next"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "web"
+}
