@@ -27,6 +27,7 @@
   },
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/cqrs": "^7.0.1",
@@ -69,10 +70,14 @@
     "@nrwl/next": "^11.0.16",
     "@nrwl/node": "^11.0.16",
     "@nrwl/react": "^11.0.16",
+    "@nrwl/storybook": "^11.0.19",
     "@nrwl/tao": "^11.0.16",
     "@nrwl/web": "^11.0.16",
     "@nrwl/workspace": "^11.0.16",
     "@nx-tools/nx-docker": "^0.4.1",
+    "@storybook/addon-knobs": "^6.1.11",
+    "@storybook/react": "^6.1.11",
+    "@svgr/webpack": "^5.4.0",
     "@testing-library/react": "11.1.2",
     "@types/bcrypt": "^3.0.0",
     "@types/jest": "^26.0.8",
@@ -81,9 +86,11 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/uuid": "^8.3.0",
+    "@types/webpack": "4.41.21",
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
     "babel-jest": "^26.2.2",
+    "babel-loader": "8.1.0",
     "cypress": "^5.5.0",
     "dotenv": "^6.2.0",
     "eslint": "^7.10.0",
@@ -98,6 +105,7 @@
     "ts-jest": "^26.4.0",
     "ts-node": "^9.1.1",
     "tslint": "^6.1.0",
-    "typescript": "4.0.*"
+    "typescript": "4.0.*",
+    "url-loader": "^3.0.0"
   }
 }
