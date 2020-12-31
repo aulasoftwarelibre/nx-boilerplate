@@ -1,10 +1,11 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { UnauthorizedException } from '@nestjs/common';
+
+import { UserView } from '../../user/application';
 import { AuthService } from '../services/auth.service';
-import { UserDTO } from '../../user/application';
+import { AuthController } from './auth.controller';
 
 const ID = '78dbd5bd-86c1-4925-a08c-1d0170e4851d';
 const USERNAME = 'username';
@@ -14,7 +15,7 @@ const CRYPT_PASSWORD =
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let user: UserDTO;
+  let user: UserView;
   const queryBus: Partial<QueryBus> = {};
 
   beforeEach(async () => {

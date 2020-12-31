@@ -1,5 +1,12 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { UserRoleWasAdded, UserRoleWasRemoved, UserWasCreated } from '../event';
+
+import {
+  UserPasswordWasUpdated,
+  UserRoleWasAdded,
+  UserRoleWasRemoved,
+  UserWasCreated,
+} from '../event';
+import { UserWasDeleted } from '../event/user-was-deleted.event';
 import { Password } from './password';
 import { Role } from './role';
 import { UserId } from './user-id';
@@ -10,6 +17,7 @@ export class User extends AggregateRoot {
   private _username: Username;
   private _password: Password;
   private _roles: Role[];
+  private _deleted?: Date;
 
   private constructor() {
     super();
@@ -65,11 +73,28 @@ export class User extends AggregateRoot {
     this.apply(new UserRoleWasRemoved(this.id.value, role.value));
   }
 
+  updatePassword(password: Password): void {
+    if (this._password.equals(password)) {
+      return;
+    }
+
+    this.apply(new UserPasswordWasUpdated(this.id.value, password.value));
+  }
+
+  delete(): void {
+    if (this._deleted) {
+      return;
+    }
+
+    this.apply(new UserWasDeleted(this.id.value));
+  }
+
   private onUserWasCreated(event: UserWasCreated) {
     this._userId = UserId.fromString(event.id);
     this._username = Username.fromString(event.username);
     this._password = Password.fromString(event.password);
     this._roles = [];
+    this._deleted = null;
   }
 
   private onUserRoleWasAdded(event: UserRoleWasAdded) {
@@ -80,5 +105,13 @@ export class User extends AggregateRoot {
     this._roles = this._roles.filter(
       (item: Role) => !item.equals(Role.fromString(event.role))
     );
+  }
+
+  private onUserPasswordWasUpdated(event: UserPasswordWasUpdated) {
+    this._password = Password.fromString(event.password);
+  }
+
+  private onUserWasDeleted(event: UserWasDeleted) {
+    this._deleted = event.createdOn;
   }
 }

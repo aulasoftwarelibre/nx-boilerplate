@@ -1,7 +1,10 @@
+import { Role } from '@boilerplate/contracts';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { UserDTO } from '../../user/application';
+
+import { UserView } from '../../user/application';
+import { ROLES_KEY } from './roles.decorator';
 
 @Injectable()
 export class RolesGuard extends AuthGuard('jwt') {
@@ -12,7 +15,7 @@ export class RolesGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err, user, info, context) {
-    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    const roles = this.reflector.get<Role[]>(ROLES_KEY, context.getHandler());
 
     if (!roles) {
       return user;
@@ -27,7 +30,7 @@ export class RolesGuard extends AuthGuard('jwt') {
     return user;
   }
 
-  private userHasRequiredRoles(user: UserDTO, roles: string[]) {
+  private userHasRequiredRoles(user: UserView, roles: string[]) {
     return user.roles.some((role) => roles.includes(role));
   }
 }

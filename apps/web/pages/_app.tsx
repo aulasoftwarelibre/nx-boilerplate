@@ -1,9 +1,10 @@
-import React from 'react';
+import { theme } from '@boilerplate/ui';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import { theme } from '@boilerplate/ui';
+import { Provider as NextAuthProvider } from 'next-auth/client';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
@@ -15,20 +16,26 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <React.Fragment>
-      <Head>
-        <title>NX Boilerplate</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </React.Fragment>
+    <NextAuthProvider session={pageProps.session}>
+      <React.Fragment>
+        <Head>
+          <title>NX Boilerplate</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>
+        <ThemeProvider theme={theme}>
+          <div style={{ display: 'flex' }}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Component {...pageProps} />
+          </div>
+        </ThemeProvider>
+      </React.Fragment>
+    </NextAuthProvider>
   );
 }
-
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,

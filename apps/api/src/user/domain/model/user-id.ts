@@ -1,5 +1,5 @@
-import * as uuid from 'uuid';
 import { Id } from '@boilerplate/domain';
+import * as uuid from 'uuid';
 
 export class UserId extends Id {
   static generate(): UserId {

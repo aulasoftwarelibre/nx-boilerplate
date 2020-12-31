@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@boilerplate/domain": ["libs/domain/src/index.ts"]
+      "@boilerplate/domain": ["libs/domain/src/index.ts"],
+      "@boilerplate/ui": ["libs/ui/src/index.ts"],
+      "@boilerplate/contracts": ["libs/contracts/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

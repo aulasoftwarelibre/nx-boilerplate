@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { CqrsModule } from '@nestjs/cqrs';
-import { JwtStrategy } from './services/jwt.strategy';
-import { AuthService } from './services/auth.service';
+
 import { AuthController } from './controller/auth.controller';
+import { AuthService } from './services/auth.service';
+import { JwtStrategy } from './services/jwt.strategy';
 
 @Module({
   imports: [

@@ -1,5 +1,6 @@
-import { Id } from './id';
 import * as uuid from 'uuid';
+
+import { Id } from './id';
 
 describe('Id', () => {
   it('creates a id value object', () => {

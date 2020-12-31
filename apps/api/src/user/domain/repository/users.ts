@@ -4,6 +4,7 @@ import { Username } from '../model/username';
 
 export interface Users {
   find(userId: UserId): Promise<User | null>;
+  findAll(): Promise<User[]>;
   findOneByUsername(username: Username): Promise<User | null>;
   save(user: User): void;
 }

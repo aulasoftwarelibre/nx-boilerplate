@@ -1,8 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserDTO } from '../../application';
+
+import { UserView } from '../../application';
 
 @Entity('users')
-export class UserEntity implements UserDTO {
+export class UserEntity implements UserView {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

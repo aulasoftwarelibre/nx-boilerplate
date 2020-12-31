@@ -1,13 +1,14 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+
 import {
   Password,
   Role,
   User,
   UserId,
   Username,
-  Users,
   USERS,
+  Users,
 } from '../../domain';
 import {
   UserIdAlreadyTakenError,

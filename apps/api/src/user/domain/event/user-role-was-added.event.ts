@@ -1,5 +1,4 @@
 import { StorableEvent } from 'event-sourcing-nestjs';
-import { Role } from '../model/role';
 
 export class UserRoleWasAdded extends StorableEvent {
   eventAggregate = 'user';

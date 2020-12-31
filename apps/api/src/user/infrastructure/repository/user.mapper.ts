@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserDTO } from '../../application';
+
 import { Password, Role, User, UserId, Username } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 
@@ -21,7 +21,7 @@ export class UserMapper {
     return user;
   }
 
-  aggregateToEntity(user: User): UserDTO {
+  aggregateToEntity(user: User): UserEntity {
     const roles: Role[] = Reflect.get(user, '_roles');
 
     return new UserEntity(

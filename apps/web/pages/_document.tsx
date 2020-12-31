@@ -1,7 +1,7 @@
-import React from 'react'
-import Document, { Head, Html, Main, NextScript } from 'next/document'
 import { theme } from '@boilerplate/ui'
 import { ServerStyleSheets } from '@material-ui/core'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
+import React from 'react'
 
 
 export default class MyDocument extends Document {

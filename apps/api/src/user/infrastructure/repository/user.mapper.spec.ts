@@ -1,8 +1,9 @@
-import * as uuid from 'uuid';
 import { Test } from '@nestjs/testing';
+import * as uuid from 'uuid';
+
+import { Password, Role, User, UserId, Username } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 import { UserMapper } from './user.mapper';
-import { Password, Role, User, UserId, Username } from '../../domain';
 
 describe('User mapper', () => {
   let userMapper: UserMapper;

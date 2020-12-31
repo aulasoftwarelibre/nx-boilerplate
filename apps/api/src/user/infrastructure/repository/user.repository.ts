@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { User, UserId, Username, Users } from '../../domain';
 import { UserEntity } from '../entity/user.entity';
 import { UserMapper } from './user.mapper';
@@ -19,6 +20,12 @@ export class UserRepository implements Users {
     const user = await this.userRepository.findOne(userId.value);
 
     return user && this.userMapper.entityToAggregate(user);
+  }
+
+  async findAll(): Promise<User[]> {
+    const users = await this.userRepository.find();
+
+    return users.map(this.userMapper.entityToAggregate);
   }
 
   async findOneByUsername(username: Username): Promise<User> {

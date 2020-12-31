@@ -1,8 +1,9 @@
 import { QueryBus } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
+
+import { AuthService } from './auth.service';
 
 const PASSWORD = 'password';
 
