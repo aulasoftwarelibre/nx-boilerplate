@@ -1,3 +1,18 @@
 {
-  "typescript.preferences.importModuleSpecifier": "project-relative"
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "cucumberautocomplete.formatConfOverride": {
+    "Característica:": 0,
+    "Escenario:": 1,
+    "Antecedentes:": 1,
+    "Esquema del escenario:": 1,
+    "Ejemplos:": 2,
+    "Dado": 2,
+    "Dada": 2,
+    "Dados": 2,
+    "Dadas": 2,
+    "Cuando": 2,
+    "Entonces": 2,
+    "Y": 2,
+    "Pero": 2,
+  }
 }

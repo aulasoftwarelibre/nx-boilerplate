@@ -1,0 +1,8 @@
+[
+  {
+    "id": "f60d593d-9ea9-4add-8f6c-5d86dd8c9f87",
+    "username": "admin",
+    "password": "$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy",
+    "roles": ["ROLE_ADMIN"]
+  }
+]

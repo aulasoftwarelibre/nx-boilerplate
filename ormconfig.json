@@ -4,7 +4,7 @@
   "port": 3306,
   "username": "root",
   "password": "mysql",
-  "database": "boilerplate",
+  "database": "boilerplate_test",
   "migrationsTableName": "migrations",
   "entities": [
     "/home/sergio/Developer/tfgs/nx-boilerplate/libs/**/*.entity{.ts,.js}"
@@ -16,5 +16,6 @@
     "migrationsDir": "apps/api/src/migrations"
   },
   "keepConnectionAlive": true,
-  "autoLoadEntities": true
+  "autoLoadEntities": true,
+  "synchronize": false
 }
