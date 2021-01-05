@@ -1,6 +1,6 @@
 {
   "name": "boilerplate",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "nx": "nx",
@@ -24,7 +24,8 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "devtools:cucumber:report": "node ./tools/generate-cucumber-report.js"
+    "devtools:cucumber:report": "node ./tools/generate-cucumber-report.js",
+    "release": "standard-version"
   },
   "private": true,
   "dependencies": {
@@ -119,6 +120,7 @@
     "jest": "^26.2.2",
     "prettier": "^2.1.2",
     "sqlite3": "^5.0.0",
+    "standard-version": "^9.1.0",
     "storybook-addon-next-router": "^2.0.3",
     "ts-jest": "^26.4.0",
     "ts-node": "^9.1.1",
