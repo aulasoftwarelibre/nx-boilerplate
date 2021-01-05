@@ -115,6 +115,14 @@
             "buildTarget": "api:build"
           }
         },
+        "serve-test": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": ["yarn run nx serve api"],
+            "parallel": false,
+            "envFile": "apps/api/.test.env"
+          }
+        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
@@ -363,14 +371,6 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
-          }
-        },
-        "serve": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": ["yarn run nx serve api"],
-            "parallel": false,
-            "envFile": "apps/api/.test.env"
           }
         }
       }

@@ -7,24 +7,20 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-import { useSession } from 'next-auth/client';
+import { Session } from 'next-auth';
 import React from 'react';
 
 import Navbar from '../navbar/navbar';
 import Sidebar from '../sidebar/sidebar';
 import { useStyles } from '../theme';
 
-/* eslint-disable-next-line */
-export interface LayoutProps {}
+export interface LayoutProps {
+  session?: Session
+}
 
-export function Layout({ children }: React.PropsWithChildren<LayoutProps>) {
+export const Layout: React.FunctionComponent<LayoutProps> = ({session, children}) => {
   const classes = useStyles();
-  const [session] = useSession();
   const [open, setOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    console.debug('session', session);
-  }, [session]);
 
   return (
     <div className={classes.root}>
