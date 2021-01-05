@@ -1,3 +1,4 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 export default (url) => ({
   elements: {
     addAuthor: '.button-add-authors',
