@@ -6,10 +6,12 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { LoginDTO } from '../dto/login.dto';
 import { AuthService } from '../services/auth.service';
 
+@ApiTags('authorization')
 @Controller('login')
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);

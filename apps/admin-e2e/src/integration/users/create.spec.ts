@@ -2,7 +2,6 @@ import createPageFactory from '../../support/CreatePage';
 import editPageFactory from '../../support/EditPage';
 import listPageFactory from '../../support/ListPage';
 import loginPageFactory from '../../support/LoginPage';
-import showPageFactory from '../../support/ShowPage';
 
 describe('Create users', () => {
   const CreatePage = createPageFactory('/#/users/create');
