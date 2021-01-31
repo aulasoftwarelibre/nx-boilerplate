@@ -1,9 +1,9 @@
+import { UserDTO } from '@boilerplate/contracts';
+import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { UserView } from '../../application';
-
 @Entity('users')
-export class UserEntity implements UserView {
+export class UserEntity implements UserDTO {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

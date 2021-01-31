@@ -1,10 +1,10 @@
-import { JwtPayloadInterface } from '@boilerplate/contracts';
+import { JwtPayloadInterface, UserDTO } from '@boilerplate/contracts';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { GetUserByUsernameQuery, UserView } from '../../user/application';
+import { GetUserByUsernameQuery } from '../../user/application';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -16,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayloadInterface): Promise<UserView> {
-    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserView>(
+  async validate(payload: JwtPayloadInterface): Promise<UserDTO> {
+    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserDTO>(
       new GetUserByUsernameQuery(payload.username)
     );
 

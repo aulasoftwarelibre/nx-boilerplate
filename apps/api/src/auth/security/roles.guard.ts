@@ -1,9 +1,8 @@
-import { Role } from '@boilerplate/contracts';
+import { Role, UserDTO } from '@boilerplate/contracts';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
-import { UserView } from '../../user/application';
 import { ROLES_KEY } from './roles.decorator';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class RolesGuard extends AuthGuard('jwt') {
     return user;
   }
 
-  private userHasRequiredRoles(user: UserView, roles: string[]) {
+  private userHasRequiredRoles(user: UserDTO, roles: string[]) {
     return user.roles.some((role) => roles.includes(role));
   }
 }

@@ -1,9 +1,9 @@
+import { UserDTO } from '@boilerplate/contracts';
 import { UnauthorizedException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { UserView } from '../../user/application';
 import { AuthService } from '../services/auth.service';
 import { AuthController } from './auth.controller';
 
@@ -15,7 +15,7 @@ const CRYPT_PASSWORD =
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let user: UserView;
+  let user: UserDTO;
   const queryBus: Partial<QueryBus> = {};
 
   beforeEach(async () => {
