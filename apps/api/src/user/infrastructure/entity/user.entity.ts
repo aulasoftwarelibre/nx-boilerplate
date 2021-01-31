@@ -17,6 +17,7 @@ export class UserEntity implements UserDTO {
     length: 70,
     nullable: false,
   })
+  @Exclude()
   password: string;
 
   @Column({

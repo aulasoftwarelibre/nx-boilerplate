@@ -10,11 +10,16 @@ import {
   USERS,
   Users,
 } from '../../domain';
+import { UserMapper } from '../../infrastructure/repository/user.mapper';
 import { UpdateUserCommand } from './update-user.command';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
-  constructor(@Inject(USERS) private users: Users) {}
+  constructor(
+    @Inject(USERS) private users: Users,
+    private userMapper: UserMapper
+  ) {}
+
   async execute(command: UpdateUserCommand) {
     const userId = UserId.fromString(command.userId);
 
@@ -28,6 +33,8 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     this.updateRoles(user, command);
 
     this.users.save(user);
+
+    return this.userMapper.aggregateToEntity(user);
   }
 
   private updatePassword(user: User, command: UpdateUserCommand) {

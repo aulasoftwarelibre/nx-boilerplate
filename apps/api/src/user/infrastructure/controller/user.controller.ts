@@ -1,7 +1,13 @@
-import { CreateUserDTO, EditUserDTO, Role } from '@boilerplate/contracts';
+import {
+  CreateUserDTO,
+  EditUserDTO,
+  Role,
+  UserDTO,
+} from '@boilerplate/contracts';
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -11,9 +17,15 @@ import {
   Post,
   Put,
   Res,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { Roles } from '../../../auth/security/roles.decorator';
@@ -24,13 +36,13 @@ import {
   GetUserQuery,
   GetUsersQuery,
   UpdateUserCommand,
-  UserView,
 } from '../../application';
 import { UserIdNotFoundError } from '../../domain';
-import { UserDTO } from '../dto';
 
 @ApiBearerAuth()
+@ApiTags('users')
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(
     private authService: AuthService,
@@ -40,13 +52,14 @@ export class UserController {
 
   @Post()
   @Roles(Role.Admin)
+  @ApiResponse({ status: 200, description: 'User created' })
   async create(@Body() createUserDto: CreateUserDTO): Promise<UserDTO> {
     try {
       const password = await this.authService.encodePassword(
         createUserDto.plainPassword
       );
 
-      await this.commandBus.execute(
+      return await this.commandBus.execute(
         new CreateUserCommand(
           createUserDto.id,
           createUserDto.username,
@@ -54,8 +67,6 @@ export class UserController {
           createUserDto.roles
         )
       );
-
-      return createUserDto;
     } catch (e) {
       if (e instanceof Error) {
         throw new BadRequestException(e.message);
@@ -67,6 +78,7 @@ export class UserController {
 
   @Get()
   @Roles(Role.Admin)
+  @ApiResponse({ status: 200, description: 'Users found' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
       const users = await this.queryBus.execute<GetUsersQuery, UserDTO[]>(
@@ -87,14 +99,15 @@ export class UserController {
 
   @Get(':id')
   @Roles(Role.Admin)
+  @ApiResponse({ status: 200, description: 'User found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
   async findOne(@Param('id') id: string): Promise<UserDTO> {
     try {
-      const user = await this.queryBus.execute<GetUserQuery, UserView>(
+      const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
         new GetUserQuery(id)
       );
 
       if (!user) throw new NotFoundException();
-      delete user.password;
 
       return user;
     } catch (e) {
@@ -110,15 +123,21 @@ export class UserController {
 
   @Put(':id')
   @Roles(Role.Admin)
-  async update(@Param('id') id: string, @Body() editUserDTO: EditUserDTO) {
+  @ApiOperation({ summary: 'Updated user' })
+  @ApiResponse({ status: 200, description: 'User updated' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async update(
+    @Param('id') id: string,
+    @Body() editUserDTO: EditUserDTO
+  ): Promise<UserDTO> {
     try {
-      const user = await this.queryBus.execute<GetUserQuery, UserView>(
+      const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
         new GetUserQuery(id)
       );
 
       if (!user) throw new NotFoundException();
 
-      await this.commandBus.execute(
+      return this.commandBus.execute(
         new UpdateUserCommand(
           id,
           editUserDTO.username,
@@ -126,8 +145,6 @@ export class UserController {
           editUserDTO.roles
         )
       );
-
-      return editUserDTO;
     } catch (e) {
       if (e instanceof UserIdNotFoundError) {
         throw new NotFoundException('User not found');
@@ -145,9 +162,9 @@ export class UserController {
   @HttpCode(200)
   @Delete(':id')
   @Roles(Role.Admin)
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<UserDTO> {
     try {
-      await this.commandBus.execute(new DeleteUserCommand(id));
+      return this.commandBus.execute(new DeleteUserCommand(id));
     } catch (e) {
       if (e instanceof UserIdNotFoundError) {
         throw new NotFoundException('User not found');
@@ -157,9 +174,5 @@ export class UserController {
         throw new BadRequestException('Server error');
       }
     }
-
-    return {
-      id,
-    };
   }
 }

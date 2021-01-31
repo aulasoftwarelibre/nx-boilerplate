@@ -22,13 +22,11 @@ export class UserMapper {
   }
 
   aggregateToEntity(user: User): UserEntity {
-    const roles: Role[] = Reflect.get(user, '_roles');
-
     return new UserEntity(
       user.id.value,
       user.username.value,
       user.password.value,
-      roles.map((role: Role) => role.value)
+      user.roles.map((role: Role) => role.value)
     );
   }
 }

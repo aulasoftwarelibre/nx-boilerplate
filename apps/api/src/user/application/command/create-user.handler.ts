@@ -14,11 +14,15 @@ import {
   UserIdAlreadyTakenError,
   UsernameAlreadyTakenError,
 } from '../../domain/exception/';
+import { UserMapper } from '../../infrastructure/repository/user.mapper';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
-  constructor(@Inject(USERS) private users: Users) {}
+  constructor(
+    @Inject(USERS) private users: Users,
+    private userMapper: UserMapper
+  ) {}
 
   async execute(command: CreateUserCommand) {
     const userId = UserId.fromString(command.userId);
@@ -37,5 +41,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     command.roles.map((role: string) => user.addRole(Role.fromString(role)));
 
     this.users.save(user);
+
+    return this.userMapper.aggregateToEntity(user);
   }
 }
