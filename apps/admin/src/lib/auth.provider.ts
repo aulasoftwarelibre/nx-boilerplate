@@ -72,7 +72,7 @@ const removeToken = () => localStorage.removeItem('auth');
 
 const isLogged = (): boolean => !!getToken();
 
-const getToken = (): string => localStorage.getItem('auth');
+const getToken = (): string | null => localStorage.getItem('auth');
 
 const getDecodedToken = (): JwtPayloadInterface => jwt(getToken());
 

@@ -94,7 +94,7 @@ export class User extends AggregateRoot {
     this._username = Username.fromString(event.username);
     this._password = Password.fromString(event.password);
     this._roles = [];
-    this._deleted = null;
+    this._deleted = undefined;
   }
 
   private onUserRoleWasAdded(event: UserRoleWasAdded) {

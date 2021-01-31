@@ -16,10 +16,14 @@ export class UserRepository implements Users {
     private publisher: EventPublisher
   ) {}
 
-  async find(userId: UserId): Promise<User> {
+  async find(userId: UserId): Promise<User|null> {
     const user = await this.userRepository.findOne(userId.value);
 
-    return user && this.userMapper.entityToAggregate(user);
+    if (!user) {
+      return null;
+    }
+
+    return this.userMapper.entityToAggregate(user);
   }
 
   async findAll(): Promise<User[]> {
@@ -28,12 +32,16 @@ export class UserRepository implements Users {
     return users.map(this.userMapper.entityToAggregate);
   }
 
-  async findOneByUsername(username: Username): Promise<User> {
+  async findOneByUsername(username: Username): Promise<User|null> {
     const user = await this.userRepository.findOne({
       username: username.value,
     });
 
-    return user && this.userMapper.entityToAggregate(user);
+    if (!user) {
+      return null;
+    }
+
+    return this.userMapper.entityToAggregate(user);
   }
 
   save(user: User): void {
